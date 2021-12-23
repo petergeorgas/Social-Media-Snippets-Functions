@@ -10,7 +10,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const twitter_api_endpoint: string = "https://api.twitter.com/2/tweets?";
 
   if (req.method === "POST") {
-    const { status_id } = req.body;
+    const {status_id}: {status_id: string} = req.body;
 
     const query_params = {
       ids: status_id,
