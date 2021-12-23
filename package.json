@@ -1,5 +1,5 @@
 {
-  "name": "social-media-snippets-next",
+  "name": "social-media-snippets-functions",
   "private": true,
   "scripts": {
     "dev": "next dev",
