@@ -6,13 +6,20 @@ import type {VercelRequest, VercelResponse} from "@vercel/node"
     to access the Twitter web API. 
 */
 
+type QueryParams = {
+  ids: string;
+  expansions: string;
+  "tweet.fields": string;
+  "user.fields": string;
+};
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const twitter_api_endpoint: string = "https://api.twitter.com/2/tweets?";
 
   if (req.method === "POST") {
     const {status_id}: {status_id: string} = req.body;
 
-    const query_params = {
+    const query_params: QueryParams = {
       ids: status_id,
       expansions: "author_id",
       "tweet.fields": "created_at",
@@ -22,15 +29,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     let api_req_link: string =
       twitter_api_endpoint + new URLSearchParams(query_params).toString(); // Append status ID
 
-    const api_request = {
+    const twitter_api_request: RequestInit = {
       method: "GET",
       headers: {
         Authorization: `Bearer ${process.env.TWITTER_API_TOKEN}`,
       },
     };
 
-    const api_response: Response = await fetch(api_req_link, api_request);
-    const jsonData:string = await api_response.json();
+    const twitter_api_response: Response = await fetch(api_req_link, twitter_api_request);
+    const jsonData:string = await twitter_api_response.json();
 
     res.status(200).json(jsonData);
   }
