@@ -22,7 +22,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const query_params: QueryParams = {
       ids: status_id,
       expansions: "author_id",
-      "tweet.fields": "created_at",
+      "tweet.fields": "created_at,public_metrics,possibly_sensitive,in_reply_to_user_id,geo",
       "user.fields": "profile_image_url,verified",
     };
 
@@ -37,7 +37,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     };
 
     const twitter_api_response: Response = await fetch(api_req_link, twitter_api_request);
-    const jsonData:string = await twitter_api_response.json();
+    const jsonData: string = await twitter_api_response.json();
 
     res.status(200).json(jsonData);
   }
