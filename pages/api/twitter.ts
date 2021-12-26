@@ -62,6 +62,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const twitter_api_response: Response = await fetch(api_req_link, twitter_api_request);
     const jsonData: string = await twitter_api_response.json();
 
+    res.setHeader("Access-Control-Allow-Origin", "*")
     res.status(200).json(jsonData);
   }
 }
