@@ -1,4 +1,24 @@
 import type {VercelRequest, VercelResponse} from "@vercel/node"
+import Cors from 'cors';
+
+// Initializing the cors middleware
+const cors = Cors({
+  methods: ['GET', 'HEAD'],
+})
+
+// Helper method to wait for a middleware to execute before continuing
+// And to throw an error when an error happens in a middleware
+function runMiddleware(req: VercelRequest, res: VercelResponse, fn: Function) {
+  return new Promise((resolve, reject) => {
+    fn(req, res, (result: any) => {
+      if (result instanceof Error) {
+        return reject(result)
+      }
+
+      return resolve(result)
+    })
+  })
+}
 
 /*
     Serverless function designed to retrieve information regarding a specific Tweet from the Twitter API. 
@@ -14,6 +34,8 @@ type QueryParams = {
 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  await runMiddleware(req, res, cors)
+  
   const twitter_api_endpoint: string = "https://api.twitter.com/2/tweets?";
 
   if (req.method === "POST") {
