@@ -38,13 +38,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   await runMiddleware(req, res, cors)
   
   const twitter_api_endpoint: string = "https://api.twitter.com/2/tweets?";
-
+  console.log(`Request received! Method: ${req.method}`)
   if (req.method === "POST") {
     const {status_id}: {status_id: string} = req.body;
 
     const query_params: QueryParams = {
-      ids: status_id,
-      expansions: "author_id",
+      "ids": status_id,
+      "expansions": "author_id",
       "tweet.fields": "created_at,public_metrics,possibly_sensitive,in_reply_to_user_id,geo",
       "user.fields": "profile_image_url,verified",
     };
@@ -62,7 +62,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const twitter_api_response: Response = await fetch(api_req_link, twitter_api_request);
     const jsonData: string = await twitter_api_response.json();
 
-    res.setHeader("Access-Control-Allow-Origin", "*")
+
     res.status(200).json(jsonData);
+  } else {
+    res.status(405).json({error: `${req.method} unsupported.`})
   }
 }
