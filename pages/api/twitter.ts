@@ -45,7 +45,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const query_params: QueryParams = {
       "ids": status_id,
       "expansions": "author_id",
-      "tweet.fields": "created_at,public_metrics,possibly_sensitive,in_reply_to_user_id,geo",
+      "tweet.fields": "created_at,public_metrics,possibly_sensitive,in_reply_to_user_id,geo,entities",
       "user.fields": "profile_image_url,verified",
     };
 
